@@ -1,9 +1,6 @@
 # Bookstore
 
-Create modern web app clean architecture with NestJS + MongoDB + Angular
-
-Visit demo for client side at : [https://bookstore778.netlify.app/](https://bookstore778.netlify.app/)
-
+Modern web app clean architecture with NestJS + MongoDB + Angular
 
 ## Technologies
 - Backend
@@ -24,3 +21,23 @@ Visit demo for client side at : [https://bookstore778.netlify.app/](https://book
 - **Effective Config** - Not able to setup effective config
 - **Email Service** - Need email service to send welcome, reset password emails
 
+
+## Running the angular - client app
+
+```bash
+# 
+$ npm run start
+```
+
+## Running the server app
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
