@@ -31,6 +31,8 @@ $ npm run start
 
 ## Running the server app
 
+#### Create a new file .env from .env.example and replace DB_URI
+
 ```bash
 # development
 $ npm run start
