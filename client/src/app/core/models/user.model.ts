@@ -1,7 +1,7 @@
 export class User {
     id!: string;
     email!: string;
-    fullName!: string;
-    authToken!: string;
+    name!: string;
+    token!: string;
 }
 

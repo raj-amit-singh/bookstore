@@ -1,17 +1,17 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { ProductGridComponent } from './components/product-grid/product-grid.component';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatCardModule} from '@angular/material/card';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { CartComponent } from './pages/cart/cart.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -25,6 +25,15 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './core/_services/user.service';
 import { BookService } from './core/_services/book.service';
+import { MatBadgeModule } from '@angular/material/badge';
+
+function appInitializer(authService: UserService) {
+  return (): Promise<void> => {
+    return new Promise<void>((resolve) => {
+      authService.getUserByToken().subscribe().add(resolve);
+    });
+  };
+}
 
 @NgModule({
   declarations: [
@@ -41,20 +50,28 @@ import { BookService } from './core/_services/book.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,
-    MatToolbarModule, 
-    MatButtonModule, 
+    MatToolbarModule,
+    MatButtonModule,
     MatIconModule,
     MatGridListModule,
     MatCardModule,
     MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
-    HttpClientModule
+    MatBadgeModule
   ],
-  providers: [UserService, BookService],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializer,
+      multi: true,
+      deps: [UserService],
+    },
+    BookService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

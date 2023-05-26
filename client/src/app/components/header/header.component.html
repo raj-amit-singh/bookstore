@@ -2,9 +2,11 @@
     <span>{{title}}</span>
     <span class="example-spacer"></span>
     <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon matBadge="15" matBadgeColor="warn">shopping_basket</mat-icon>
+        <mat-icon matBadge="6" matBadgeColor="warn">shopping_basket</mat-icon>
     </button>
-    <button mat-button (click)="goToLogin()">Login</button>
-    <button mat-button (click)="goToSignup()" >Signup</button>
-    <button mat-button>Hi Raj</button>
+    <button mat-button *ngIf="!userName" (click)="goToLogin()">Login</button>
+    <button mat-button *ngIf="!userName" (click)="goToSignup()">Signup</button>
+    <button mat-button *ngIf="userName">Hi <span class="capitalize">{{ userName }}</span></button>
+
+
 </mat-toolbar>

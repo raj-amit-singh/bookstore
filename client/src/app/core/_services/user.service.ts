@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, finalize, map, of, switchMap } from 'rxjs';
 import { User } from '../models/user.model';
 import {
   environment as env,
@@ -11,59 +11,109 @@ import {
   providedIn: 'root'
 })
 export class UserService {
-  // private currentUserSubject: BehaviorSubject<User>;
-  // public currentUser: Observable<User>;
+  private isLoadingSubject: BehaviorSubject<boolean>;
+  private currentUserSubject: BehaviorSubject<User | null>;
+  public currentUser: Observable<User | null>;
   authLocalStorageToken: string = `authToken`;
+  isLoading$: Observable<boolean>;
+
   constructor(
     private http: HttpClient, private router: Router,
   ) { 
-    // this.currentUserSubject = new BehaviorSubject<User>(
-    //   JSON.parse("")
-    // );
-    // this.currentUser = this.currentUserSubject.asObservable();
+    this.currentUserSubject = new BehaviorSubject<User | null>(null);
+    this.currentUser = this.currentUserSubject.asObservable();
+    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
+    this.isLoading$ = this.isLoadingSubject.asObservable();
+  } 
+
+  public get currentUserValue(): User | null{
+    return this.currentUserSubject.value;
   }
 
-  // public get currentUserValue(): User {
-  //   return this.currentUserSubject.value;
-  // }
+  login(data:{email:string, password: string}): Observable<any> {
+    return this.http
+      .post<any>(`${env.BASE_URL}/auth/login`, data)
+      .pipe(
+        map(
+          (result) => {
+            if (result) {
+              localStorage.clear();
+              localStorage.setItem(
+                this.authLocalStorageToken,
+                JSON.stringify(result)
+              );
+              this.setAuthFromLocalStorage(result);
+            }
+          }
+          // catchError(this.handleError < any > ('Login'))
+        ),
+        switchMap(() => this.getUserByToken()),
+        finalize(() => this.isLoadingSubject.next(false))
+      );
+  }
 
-  // loginUserEmail(data:any): Observable<any> {
-  //   return this.http
-  //     .post<any>(`${env.BASE_URL}/api/auth/login`, data)
-  //     .pipe(
-  //       map(
-  //         (result) => {
-  //           if (result) {
-  //             localStorage.clear();
-  //             localStorage.setItem(
-  //               this.authLocalStorageToken,
-  //               JSON.stringify(result.data)
-  //             );
-  //             this.currentUserSubject.next(result.data);
-  //           }
-  //         }
-  //         // catchError(this.handleError < any > ('Login'))
-  //       )
-  //     );
-  // }
+  // private methods
+  private setAuthFromLocalStorage(auth: any): boolean {
+    // store auth accessToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
+    if (auth && auth.token) {
+      localStorage.setItem(this.authLocalStorageToken, JSON.stringify(auth));
+      return true;
+    }
+    return false;
+  }
 
+  private getAuthFromLocalStorage(): User | undefined {
+    try {
+      const storedUser = localStorage.getItem(this.authLocalStorageToken);
+      const authData = storedUser ? JSON.parse(storedUser) : undefined;;
+      return authData;
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
+  }
 
-  // Fetch customer's profile and update localstorage
-  // getUserProfile() {
-  //   return this.http.get<any>(`${env.BASE_URL}/customer/profile`).pipe(
-  //     map((result) => {
-  //       localStorage.setItem(
-  //         this.authLocalStorageToken,
-  //         JSON.stringify(result.data)
-  //       );
-  //       this.currentUserSubject.next(result.data);
-  //     })
-  //   );
-  // }
+  getUserByToken(): Observable<User | undefined> {
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.token) {
+      return of(undefined);
+    }
 
-  logoutUser() {
-    //call logout API
-    localStorage.clear();
-    // this.currentUserSubject.next(null);
+    this.isLoadingSubject.next(true);
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.token}`,
+    });
+    return this.http
+      .get<any>(`${env.BASE_URL}/user/`, {
+        headers: httpHeaders,
+      })
+      .pipe(
+        map((user: any) => {
+          console.log(user);
+          if (user) {
+            this.currentUserSubject = new BehaviorSubject<User | null>(user);
+          } else {
+            this.logout();
+          }
+          return user;
+        }),
+        finalize(() => this.isLoadingSubject.next(false))
+      );
+  }
+
+   getUserProfile() {
+    return this.http.get<any>(`${env.BASE_URL}/user`).pipe(
+      map((result) => {
+        this.currentUserSubject.next(result);
+      })
+    );
+  }
+
+  logout() {
+    localStorage.removeItem(this.authLocalStorageToken);
+    this.router.navigate(['/'], {
+      queryParams: {},
+    });
+    this.currentUserSubject.next(null);
   }
 }

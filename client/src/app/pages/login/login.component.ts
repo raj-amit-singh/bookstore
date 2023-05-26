@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/core/_services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -7,18 +8,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  email: string = '';
+  password: string = '';
 
-  email!: string;
-  password!: string;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private _userService: UserService) {}
 
   login(): void {
-    // Perform login logic here
-    // Example: Call an authentication service or API
+    this._userService.login({email: this.email, password: this.password}).subscribe(()=>{
+      this.router.navigate(['/home']);
+    },(error)=>{
 
-    // Redirect to home page on successful login
-    this.router.navigate(['/home']);
+    })
   }
 
   goToSignup(): void {

@@ -13,12 +13,9 @@ export class BookService {
     private general: GeneralConfig
   ) { }
 
-  getBooks(queryParams:{limit?: string, page?: string, query?: string}){
+  getBooks(queryParams:{limit: number, page: number, query?: string}){
     let queryString = this.general.queryParams(queryParams)
-    if(queryString){
-      return this.http.get < any > (`${env.BASE_URL}/book?${queryString}`);
-    }
-    return this.http.get < any > (`${env.BASE_URL}/books`);
+      return this.http.get < any > (`${env.BASE_URL}/books?${queryString}`);
   }
 
 }

@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit{
     this.loadBooks();
   }
   loadBooks(){
-    this._bookService.getBooks({}).subscribe((books) => {
+    this._bookService.getBooks({limit:10, page:1}).subscribe((books) => {
       if(books){
         this.booksData = books
       }

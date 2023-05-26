@@ -7,6 +7,7 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { HomeComponent } from './pages/home/home.component';
+import { CartComponent } from './pages/cart/cart.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
         path: 'login',
         component: LoginComponent,
         // canActivate:[LoginGuard]
+      },
+      {
+        path: 'cart',
+        component: CartComponent,
       },
       {
         path: 'signup',

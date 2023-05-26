@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { UserService } from 'src/app/core/_services/user.service';
 
 @Component({
   selector: 'app-product-grid',
@@ -6,13 +7,12 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./product-grid.component.css']
 })
 export class ProductGridComponent {
-  // books: any[] = [
-  //   { author:'Author', name: 'book 1', price: '$19.99', imageUrl: 'https://placehold.co/200x200' },
-  //   { author:'Author', name: 'book 2', price: '$29.99', imageUrl: 'https://placehold.co/200x200' },
-  //   { author:'Author', name: 'book 3', price: '$39.99', imageUrl: 'https://placehold.co/200x200' },
-  //   { author:'Author', name: 'book 3', price: '$39.99', imageUrl: 'https://placehold.co/200x200' },
-  //   // Add more products as needed
-  // ];
 
-  @Input() books: any;
+  // Books data will pass in from parent component
+  @Input() books: any; //TODO - Create Book Model
+
+  constructor(private _userService: UserService){}
+  addToCart(bookId:string){
+    // this._userService.
+  }
 }
