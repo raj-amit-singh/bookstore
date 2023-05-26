@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-product-grid',
@@ -6,11 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./product-grid.component.css']
 })
 export class ProductGridComponent {
-  books: any[] = [
-    { author:'Author', name: 'book 1', price: '$19.99', imageUrl: 'https://placehold.co/200x200' },
-    { author:'Author', name: 'book 2', price: '$29.99', imageUrl: 'https://placehold.co/200x200' },
-    { author:'Author', name: 'book 3', price: '$39.99', imageUrl: 'https://placehold.co/200x200' },
-    { author:'Author', name: 'book 3', price: '$39.99', imageUrl: 'https://placehold.co/200x200' },
-    // Add more products as needed
-  ];
+  // books: any[] = [
+  //   { author:'Author', name: 'book 1', price: '$19.99', imageUrl: 'https://placehold.co/200x200' },
+  //   { author:'Author', name: 'book 2', price: '$29.99', imageUrl: 'https://placehold.co/200x200' },
+  //   { author:'Author', name: 'book 3', price: '$39.99', imageUrl: 'https://placehold.co/200x200' },
+  //   { author:'Author', name: 'book 3', price: '$39.99', imageUrl: 'https://placehold.co/200x200' },
+  //   // Add more products as needed
+  // ];
+
+  @Input() books: any;
 }

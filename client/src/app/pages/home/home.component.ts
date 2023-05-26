@@ -1,10 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { BookService } from 'src/app/core/_services/book.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
+
+  booksData = [];
+  constructor(
+    private _bookService: BookService
+  ){
+  }
+
+  ngOnInit(){
+    this.loadBooks();
+  }
+  loadBooks(){
+    this._bookService.getBooks({}).subscribe((books) => {
+      if(books){
+        this.booksData = books
+      }
+    })
+  }
 
 }

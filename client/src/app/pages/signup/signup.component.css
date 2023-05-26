@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .card {
+    width: 300px;
+  }
+  
+  .card-content {
+    padding: 16px;
+  }
+  
+  .card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+  }
+  

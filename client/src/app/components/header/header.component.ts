@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -6,5 +7,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+  title = 'Bookstore';
 
+  constructor(private router: Router) {}
+
+
+  goToSignup(): void {
+    this.router.navigate(['/signup']);
+  }
+
+  goToLogin(): void {
+    this.router.navigate(['/login']);
+  }
 }

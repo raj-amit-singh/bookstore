@@ -15,18 +15,33 @@ import {MatDividerModule} from '@angular/material/divider';
 import { CartComponent } from './pages/cart/cart.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './pages/home/home.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { LoginComponent } from './pages/login/login.component';
+import { SignupComponent } from './pages/signup/signup.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { HttpClientModule } from '@angular/common/http';
+import { UserService } from './core/_services/user.service';
+import { BookService } from './core/_services/book.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductGridComponent,
     CartComponent,
+    LoginComponent,
+    SignupComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
     HomeComponent,
     HeaderComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,
     MatToolbarModule, 
@@ -34,9 +49,12 @@ import { HomeComponent } from './pages/home/home.component';
     MatIconModule,
     MatGridListModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [UserService, BookService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,14 +1,15 @@
-<!-- product-grid.component.html -->
+
+<ng-container *ngIf="books.length>0">
 <mat-grid-list cols="5" rowHeight="400px" gutterSize="0">
     <mat-grid-tile *ngFor="let book of books">
         <mat-card>
             <!-- <mat-card-header>
           <mat-card-title>{{ book.title }}</mat-card-title>
         </mat-card-header> -->
-            <img mat-card-image [src]="book.imageUrl" alt="book Image">
+            <img mat-card-image [src]="book.imageURL" alt="book Image">
             <mat-card-content>
                 <p>{{ book.name }} by <span>{{book.author}}</span></p>
-                <p>{{ book.price }}</p>
+                <p>${{ book.price }}</p>
             </mat-card-content>
             <mat-card-actions>
                 <button mat-button color="primary">Add to Cart</button>
@@ -16,3 +17,4 @@
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
+</ng-container>
