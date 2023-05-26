@@ -19,8 +19,8 @@ Modern web app clean architecture with NestJS + MongoDB + Angular
 
 ## Issues
 - **Effective Config** - Not able to setup effective config
-- **Email Service** - Need email service to send welcome, reset password emails
-
+- **Signup** - Need to fix singup bugs
+- **Purchase** - Need to add cart and purchase
 
 ## Running the angular - client app
 
